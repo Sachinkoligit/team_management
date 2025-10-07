@@ -8,6 +8,7 @@ This application allows users to **create, manage, and track tasks** efficiently
 ## 🔹 Features
  
 - **Task CRUD Operations**: Create, Read, Update, Delete tasks.
+- **Board Navigation**: By clicking on a board container, you will navigate to a page where you can view all the tasks associated with that board.
   - **Boards Management**:  
   - Create new boards.  
   - Update board details.  
