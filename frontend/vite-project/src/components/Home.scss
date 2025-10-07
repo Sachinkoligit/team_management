@@ -1,12 +1,68 @@
-.home{
+.home {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 10px;
+  .card {
+    border: 1px solid black;
+    padding: 10px;
+    cursor: pointer;
+  }
+}
+
+.tasks {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+
+  .task {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    border: 1px solid black;
+    padding: 5px;
+  }
+}
+.form-container {
+  border: 1px solid black;
+  padding: 5px;
+  width: 35%;
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    input {
+      align-self: flex-end;
+    }
+  }
+  .inform {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: start;
-    gap: 10px;
-    .card{
-        border: 1px solid black;
-        padding: 10px;
-        cursor: pointer;
-    }
+    justify-content: space-between;
+  }
+  .btn {
+    width: 100px;
+  }
+}
+.form1 {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border: 1px solid black;
+  padding: 4px;
+  align-self: center;
+  input {
+    width: 100px;
+    margin-left: 20px;
+  }
+}
+.board-btn,
+.home-btn {
+  margin-bottom: 50px;
+}
+.btn-container {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
 }

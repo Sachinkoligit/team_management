@@ -1,23 +1,15 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../lib/axios";
 import "./Home.scss";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
   const [Boards, setBoards] = useState([]);
   const [newBoardName, setNewBoardName] = useState("");
   const [updateBoard, setUpdateBoard] = useState(false);
+  const [postBoard, setPostBoard] = useState(false);
   const [boardId, setBoardId] = useState("");
-  const [taskstatus, setTaskstatus] = useState(false);
-  const [getTasks, setGetTasks] = useState([]);
-
-  const [taskData, setTaskData] = useState({
-    title: "",
-    description: "",
-    status: "",
-    priority: "",
-    assignedTo: "",
-    dueDate: "",
-  });
 
   const getBoards = async () => {
     try {
@@ -28,38 +20,21 @@ export default function Home() {
     }
   };
 
-  const getTask = async (id) => {
+  const postBoards = async () => {
     try {
-      const data = await axiosInstance.get(`team/getBoard/${id}/tasks`);
-      console.log(data.data);
-      setGetTasks(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const addTask = async () => {
-    if (!boardId) {
-      console.warn("Board ID is missing");
-      return;
-    }
-    try {
-      const response = await axiosInstance.post(
-        `team/getBoard/${boardId}/tasks`,
-        taskData
-      );
-      console.log("Task added:", response.data);
-      setTaskData({
-        title: "",
-        description: "",
-        status: "",
-        priority: "",
-        assignedTo: "",
-        dueDate: "",
+      if (!newBoardName) {
+        alert("fill the details.");
+        return;
+      }
+      const boardsData = await axiosInstance.post("team/createBoards", {
+        name: newBoardName,
       });
-      setTaskstatus(false);
+      console.log(boardsData);
     } catch (error) {
       console.log(error);
+    } finally {
+      setPostBoard(false);
+      getBoards();
     }
   };
 
@@ -75,114 +50,97 @@ export default function Home() {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await axiosInstance.delete(`team/remove/${id}`);
+      console.log("Deleted Successfully");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      getBoards();
+    }
+  };
+
   useEffect(() => {
     getBoards();
   }, []);
 
   return (
-    <div className="home">
-      {Boards.map((board) => (
-        <div
-          className="card"
-          key={board._id}
-          onClick={() => {
-            getTask(board._id);
-            setTaskstatus(true);
-          }}
-        >
-          <h2>{board.name}</h2>
-          <button
+    <>
+      <div className="board-btn">
+        <button onClick={() => setPostBoard(true)}>Add Board</button>
+      </div>
+      <div className="home">
+        {Boards.map((board) => (
+          <div
+            className="card"
+            key={board._id}
             onClick={() => {
-              setUpdateBoard(true);
-              setBoardId(board._id);
+              navigate(`/tasks/${board._id}`);
             }}
           >
-            Update Board Name
-          </button>
-          <button
-            onClick={() => {
-              setTaskstatus(true);
-              setBoardId(board._id);
-            }}
-          >
-            Add Task
-          </button>
-        </div>
-      ))}
+            <h2>{board.name}</h2>
+            <div className="btn-container">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setUpdateBoard(true);
+                  setBoardId(board._id);
+                }}
+              >
+                Update Board Name
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/addTask/${board._id}`);
+                }}
+              >
+                Add Task
+              </button>
 
-      {updateBoard && (
-        <div>
-          <h2>Update Board Name</h2>
-          <label>Board Name</label>
-          <input
-            type="text"
-            value={newBoardName}
-            onChange={(e) => setNewBoardName(e.target.value)}
-          />
-          <button onClick={updatenewboard}>Update</button>
-        </div>
-      )}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(board._id);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
 
-      {taskstatus && (
-        <div>
-          <h2>Add Task</h2>
-          <label>Title</label>
-          <input
-            type="text"
-            value={taskData.title}
-            onChange={(e) =>
-              setTaskData({ ...taskData, title: e.target.value })
-            }
-          />
+        {updateBoard && (
+          <div className="form1">
+            <h2>Update Board Name</h2>
+            <div>
+              <label>Board Name</label>
+              <input
+                type="text"
+                value={newBoardName}
+                onChange={(e) => setNewBoardName(e.target.value)}
+              />
+            </div>
+            <button onClick={updatenewboard}>Update</button>
+          </div>
+        )}
 
-          <label>Description</label>
-          <input
-            type="text"
-            value={taskData.description}
-            onChange={(e) =>
-              setTaskData({ ...taskData, description: e.target.value })
-            }
-          />
-
-          <label>Status</label>
-          <input
-            type="text"
-            value={taskData.status}
-            onChange={(e) =>
-              setTaskData({ ...taskData, status: e.target.value })
-            }
-          />
-
-          <label>Priority</label>
-          <input
-            type="text"
-            value={taskData.priority}
-            onChange={(e) =>
-              setTaskData({ ...taskData, priority: e.target.value })
-            }
-          />
-
-          <label>Assigned To</label>
-          <input
-            type="text"
-            value={taskData.assignedTo}
-            onChange={(e) =>
-              setTaskData({ ...taskData, assignedTo: e.target.value })
-            }
-          />
-
-          <label>Due Date</label>
-          <input
-            type="date"
-            value={taskData.dueDate}
-            onChange={(e) =>
-              setTaskData({ ...taskData, dueDate: e.target.value })
-            }
-          />
-
-          <button onClick={addTask}>Add Task</button>
-        </div>
-      )}
-    </div>
+        {postBoard && (
+          <div className="form1">
+            <h2>Update Board Name</h2>
+            <div>
+              <label>Board Name</label>
+              <input
+                type="text"
+                value={newBoardName}
+                onChange={(e) => setNewBoardName(e.target.value)}
+              />
+            </div>
+            <button onClick={postBoards}>Add</button>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
