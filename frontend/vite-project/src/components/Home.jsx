@@ -9,7 +9,7 @@ export default function Home() {
   const [boardId, setBoardId] = useState("");
   const [taskstatus, setTaskstatus] = useState(false);
   const [getTasks, setGetTasks] = useState([]);
-  
+
   const [taskData, setTaskData] = useState({
     title: "",
     description: "",
@@ -31,6 +31,7 @@ export default function Home() {
   const getTask = async (id) => {
     try {
       const data = await axiosInstance.get(`team/getBoard/${id}/tasks`);
+      console.log(data.data);
       setGetTasks(data.data);
     } catch (error) {
       console.log(error);
@@ -84,7 +85,10 @@ export default function Home() {
         <div
           className="card"
           key={board._id}
-          onClick={() => {getTask(board._id);setTaskstatus(true)}}
+          onClick={() => {
+            getTask(board._id);
+            setTaskstatus(true);
+          }}
         >
           <h2>{board.name}</h2>
           <button
@@ -179,8 +183,6 @@ export default function Home() {
           <button onClick={addTask}>Add Task</button>
         </div>
       )}
-
-      {taskstatus && }
     </div>
   );
 }
