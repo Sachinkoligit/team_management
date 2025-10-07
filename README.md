@@ -25,7 +25,7 @@ This application allows users to **create, manage, and track tasks** efficiently
 
 ## 🛠 Tech Stack
 
-- **Frontend:** React, Vite, Tailwind CSS, Axios  
+- **Frontend:** React, Vite, Axios  
 - **Backend:** Node.js, Express.js  
 - **Database:** MongoDB    
 - **Deployment:** Vercel  
