@@ -1,7 +1,7 @@
 # Task Management System
 
 A **full-stack Task Management System** built with **Node.js, Express, MongoDB, and React (Vite)**.  
-This application allows users to **create, manage, and track tasks** efficiently with a modern, responsive interface.
+This application allows users to **create, manage, and track tasks** efficiently with a modern interface.
 
 ---
 
