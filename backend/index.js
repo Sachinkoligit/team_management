@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "https://team-management-8yk8.vercel.app/",
+    origin: "https://team-management-7clb.vercel.app/",
   })
 );
 
