@@ -22,7 +22,6 @@ app.get("/", (req, res) => {
   res.send("Welcome to the homepage!");
 });
 
-app.listen(5001, () => {
-  console.log("Server Created Successfully");
-  Connection();
-});
+// Connect DB at the top level
+Connection();
+export default app;
