@@ -1,0 +1,12 @@
+.home{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 10px;
+    .card{
+        border: 1px solid black;
+        padding: 10px;
+        cursor: pointer;
+    }
+}
